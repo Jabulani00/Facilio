@@ -4,6 +4,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
 import { FileStorageService } from './file-storage.service';
 import { switchMap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +33,11 @@ export class UserProfileService {
     }
   }
 
-  getUserProfile(userId: string): Observable<any> {
-    return this.firestore.doc(`users/${userId}`).valueChanges();
+  getUserProfile(email: string): Observable<any> {
+    return this.firestore.collection('users', ref => ref.where('email', '==', email))
+      .valueChanges({ idField: 'userId' })
+      .pipe(
+        map(users => users.length > 0 ? users[0] : null)
+      );
   }
 }

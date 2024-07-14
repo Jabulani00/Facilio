@@ -2,3 +2,27 @@
   <strong>{{ name }}</strong>
   <p>Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
 </div>
+
+<div class="modal">
+  <div class="modal-header">
+    <h2>Request Details</h2>
+    <button class="close-button" (click)="close()">×</button>
+  </div>
+  <div class="modal-body">
+    <h3>Type: {{ request.type }}</h3>
+    <p>Floor: {{ request.floor }}</p>
+    <p>Room: {{ request.room }}</p>
+    <p>Status: {{ request.status }}</p>
+    <div *ngIf="request.images && request.images.length > 0">
+        <p>Images:</p>
+        <div *ngFor="let imageUrl of request.images">
+          <img [src]="imageUrl" alt="Maintenance Image" />
+        </div>
+      </div>
+  </div>
+  <div class="modal-footer">
+    <button class="approve-button" (click)="approveRequest()">Approve</button>
+    <button class="decline-button" (click)="declineRequest()">Decline</button>
+  </div>
+</div>
+

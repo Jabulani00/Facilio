@@ -1,13 +1,22 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>dashboard-sp</ion-title>
+    <ion-title>maintenance-requests-sp</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">dashboard-sp</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="container">
+    <div *ngFor="let request of maintenanceRequests" class="card" (click)="openRequestModal(request)">
+      <h3>Type: {{ request.type }}</h3>
+      <p>Floor: {{ request.floor }}</p>
+      <p>Room: {{ request.room }}</p>
+      <p>Status: {{ request.status }}</p>
+      <div *ngIf="request.images && request.images.length > 0">
+        <p>Images:</p>
+        <div *ngFor="let imageUrl of request.images">
+          <img [src]="imageUrl" alt="Maintenance Image" />
+        </div>
+      </div>
+    </div>
+  </div>
 </ion-content>
