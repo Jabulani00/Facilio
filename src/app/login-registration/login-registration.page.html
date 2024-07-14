@@ -1,13 +1,56 @@
-<ion-header [translucent]="true">
+<!-- login-registration.page.html -->
+<ion-header>
   <ion-toolbar>
-    <ion-title>login-registration</ion-title>
+    <ion-title>{{ isLogin ? 'Login' : 'Registration' }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">login-registration</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <form (ngSubmit)="onSubmit()">
+    <ion-item>
+      <ion-label position="floating">Email</ion-label>
+      <ion-input type="email" [(ngModel)]="email" name="email" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Password</ion-label>
+      <ion-input type="password" [(ngModel)]="password" name="password" required></ion-input>
+    </ion-item>
+
+    <ng-container *ngIf="!isLogin">
+      <ion-item>
+        <ion-label position="floating">Confirm Password</ion-label>
+        <ion-input type="password" [(ngModel)]="confirmPassword" name="confirmPassword" required></ion-input>
+      </ion-item>
+
+      <ion-radio-group [(ngModel)]="userType" name="userType">
+        <ion-item>
+          <ion-label>Service Provider</ion-label>
+          <ion-radio value="sp"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Building Manager</ion-label>
+          <ion-radio value="bm"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+
+      <ion-item>
+        <ion-label>Upload 5 Images</ion-label>
+        <ion-input type="file" (change)="onImageChange($event)" multiple accept="image/*" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Upload Document</ion-label>
+        <ion-input type="file" (change)="onDocumentChange($event)" accept=".pdf,.doc,.docx" required></ion-input>
+      </ion-item>
+    </ng-container>
+
+    <ion-button expand="block" type="submit" class="ion-margin-top">
+      {{ isLogin ? 'Login' : 'Register' }}
+    </ion-button>
+  </form>
+
+  <ion-button expand="block" fill="clear" (click)="toggleForm()">
+    {{ isLogin ? 'Need an account? Register' : 'Already have an account? Login' }}
+  </ion-button>
 </ion-content>
