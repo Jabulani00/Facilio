@@ -5,12 +5,12 @@
 export const environment = {
   production: false,  // Add this line
   firebaseConfig :{
-    apiKey: "AIzaSyArbuTqIlLkQrwbAzSkKbNCbLuc4g2ZMlo",
-    authDomain: "facilio-1efbc.firebaseapp.com",
-    projectId: "facilio-1efbc",
-    storageBucket: "facilio-1efbc.appspot.com",
-    messagingSenderId: "239536222619",
-    appId: "1:239536222619:web:8acd53a2da91737dee313e"
+    apiKey: "AIzaSyB9HsvgCgOPEt_qGwWFVsvM4eeLc2aazeI",
+    authDomain: "facilio-bf006.firebaseapp.com",
+    projectId: "facilio-bf006",
+    storageBucket: "facilio-bf006.appspot.com",
+    messagingSenderId: "906860337258",
+    appId: "1:906860337258:web:c36c6f7d9365013b8a9213"
   }
 };
 
