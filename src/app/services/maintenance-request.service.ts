@@ -6,6 +6,9 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class MaintenanceRequestService {
+  saveImageUrl(requestId: string, imageUrl: string): Promise<any> {
+    return this.firestore.collection('maintenanceRequests').doc(requestId).collection('images').add({ url: imageUrl });
+  }
   constructor(private firestore: AngularFirestore) {}
 
   createRequest(request: any): Promise<any> {
@@ -23,4 +26,9 @@ export class MaintenanceRequestService {
   deleteRequest(id: string): Promise<void> {
     return this.firestore.doc(`maintenanceRequests/${id}`).delete();
   }
+
+  // createRequest(maintenance: any): Promise<any> {
+  //   return this.firestore.collection('maintenanceRequests').add(maintenance);
+  // }
+
 }
