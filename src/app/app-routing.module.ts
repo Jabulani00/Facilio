@@ -4,13 +4,75 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
+    redirectTo: 'login-registration',
+    pathMatch: 'full'
+  },
+  {
+    path: 'login-registration',
+    loadChildren: () => import('./login-registration/login-registration.module').then(m => m.LoginRegistrationPageModule)
+  },
+  {
+    path: 'dashboard-bm',
+    loadChildren: () => import('./dashboard-bm/dashboard-bm.module').then(m => m.DashboardBmPageModule)
+  },
+  {
+    path: 'dashboard-sp',
+    loadChildren: () => import('./dashboard-sp/dashboard-sp.module').then(m => m.DashboardSpPageModule)
+  },
+  {
+    path: 'maintenance-requests-bm',
+    loadChildren: () => import('./maintenance-requests-bm/maintenance-requests-bm.module').then(m => m.MaintenanceRequestsBmPageModule)
+  },
+  {
+    path: 'maintenance-requests-sp',
+    loadChildren: () => import('./maintenance-requests-sp/maintenance-requests-sp.module').then(m => m.MaintenanceRequestsSpPageModule)
+  },
+  {
+    path: 'service-details',
+    loadChildren: () => import('./service-details/service-details.module').then(m => m.ServiceDetailsPageModule)
+  },
+  {
+    path: 'rating-and-review',
+    loadChildren: () => import('./rating-and-review/rating-and-review.module').then(m => m.RatingAndReviewPageModule)
+  },
+  {
+    path: 'admin-panel',
+    loadChildren: () => import('./admin-panel/admin-panel.module').then(m => m.AdminPanelPageModule)
+  },
+  {
+    path: 'report-issue-bm',
+    loadChildren: () => import('./report-issue-bm/report-issue-bm.module').then(m => m.ReportIssueBmPageModule)
+  },
+  {
+    path: 'report-issue-sp',
+    loadChildren: () => import('./report-issue-sp/report-issue-sp.module').then(m => m.ReportIssueSpPageModule)
+  },
+  {
+    path: 'task-status-update',
+    loadChildren: () => import('./task-status-update/task-status-update.module').then(m => m.TaskStatusUpdatePageModule)
+  },
+  {
+    path: 'user-profile',
+    loadChildren: () => import('./user-profile/user-profile.module').then(m => m.UserProfilePageModule)
+  },
+  {
+    path: 'search-results',
+    loadChildren: () => import('./search-results/search-results.module').then(m => m.SearchResultsPageModule)
+  },
+  {
+    path: 'messaging',
+    loadChildren: () => import('./messaging/messaging.module').then(m => m.MessagingPageModule)
+  },
+  {
+    path: '**',
+    redirectTo: 'login-registration'
   }
 ];
+
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

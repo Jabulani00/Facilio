@@ -3,8 +3,17 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,  // Add this line
+  firebaseConfig :{
+    apiKey: "AIzaSyArbuTqIlLkQrwbAzSkKbNCbLuc4g2ZMlo",
+    authDomain: "facilio-1efbc.firebaseapp.com",
+    projectId: "facilio-1efbc",
+    storageBucket: "facilio-1efbc.appspot.com",
+    messagingSenderId: "239536222619",
+    appId: "1:239536222619:web:8acd53a2da91737dee313e"
+  }
 };
+
 
 /*
  * For easier debugging in development mode, you can import the following file
