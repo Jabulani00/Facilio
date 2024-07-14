@@ -55,22 +55,57 @@ export class LoginRegistrationPage {
 
   // login-registration.page.ts
 
-async login() {
-  const loading = await this.loadingController.create({ message: 'Logging in...' });
-  await loading.present();
-
-  try {
-    await this.authService.signIn(this.email, this.password);
-    // Navigate to UserProfilePage on successful login
-    this.router.navigate(['/user-profile']);
-  } catch (error) {
-    console.error('Login error', error);
-    this.showAlert('Login Failed', 'Please check your credentials and try again.');
-  } finally {
-    loading.dismiss();
+  async login() {
+    try {
+      const loading = await this.loadingController.create({ message: 'Logging in...' });
+      await loading.present();
+  
+      // Attempt to sign in
+      await this.authService.signIn(this.email, this.password);
+  
+      // Fetch user profile based on email
+      this.userProfileService.getUserProfile(this.email).subscribe({
+        next: (userProfile) => {
+          if (!userProfile) {
+            this.showAlert('Login Failed', 'User profile not found.');
+            return;
+          }
+  
+          // Handle different user statuses
+          switch (userProfile.status) {
+            case 'pending':
+              this.showAlert('Login Failed', 'Your account is pending approval. Please wait for admin approval.');
+              loading.dismiss(); // Dismiss loading indicator
+              break;
+            case 'blocked':
+              this.showAlert('Login Failed', 'Your account is blocked. Please contact support for assistance.');
+              loading.dismiss(); // Dismiss loading indicator
+              break;
+            case 'suspended':
+              this.showAlert('Login Failed', 'Your account is suspended. Please contact support for assistance.');
+              loading.dismiss(); // Dismiss loading indicator
+              break;
+            default:
+              // Navigate to UserProfilePage on successful login
+              this.router.navigate(['/user-profile']);
+              loading.dismiss(); // Dismiss loading indicator
+              break;
+          }
+        },
+        error: (error) => {
+          console.error('Login error', error);
+          this.showAlert('Login Failed', 'Please check your credentials and try again.');
+          loading.dismiss(); // Dismiss loading indicator on error
+        }
+      });
+  
+    } catch (error) {
+      console.error('Login error', error);
+      this.showAlert('Login Failed', 'Please check your credentials and try again.');
+    }
   }
-}
-
+  
+  
 
   async register() {
     if (this.password !== this.confirmPassword) {
