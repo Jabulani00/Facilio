@@ -35,3 +35,172 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import "@ionic/angular/css/palettes/dark.system.css";
+
+
+// global.scss or your main stylesheet
+
+:root {
+    --ion-color-primary: #3498db;
+    --ion-color-primary-rgb: 52, 152, 219;
+    --ion-color-primary-contrast: #ffffff;
+    --ion-color-primary-contrast-rgb: 255, 255, 255;
+    --ion-color-primary-shade: #2e86c1;
+    --ion-color-primary-tint: #48a6e0;
+  
+    --ion-color-secondary: #2ecc71;
+    --ion-color-secondary-rgb: 46, 204, 113;
+    --ion-color-secondary-contrast: #ffffff;
+    --ion-color-secondary-contrast-rgb: 255, 255, 255;
+    --ion-color-secondary-shade: #28b463;
+    --ion-color-secondary-tint: #43d17f;
+  
+    --ion-color-tertiary: #f39c12;
+    --ion-color-tertiary-rgb: 243, 156, 18;
+    --ion-color-tertiary-contrast: #000000;
+    --ion-color-tertiary-contrast-rgb: 0, 0, 0;
+    --ion-color-tertiary-shade: #d68910;
+    --ion-color-tertiary-tint: #f4a62a;
+  
+    --ion-background-color: #ecf0f1;
+    --ion-background-color-rgb: 236, 240, 241;
+  
+    --ion-text-color: #2c3e50;
+    --ion-text-color-rgb: 44, 62, 80;
+  
+    --ion-color-step-50: #e1e5e6;
+    --ion-color-step-100: #d5dada;
+    --ion-color-step-150: #cad0d1;
+    --ion-color-step-200: #bec5c7;
+    --ion-color-step-250: #b3babb;
+    --ion-color-step-300: #a7b0b1;
+    --ion-color-step-350: #9ca5a6;
+    --ion-color-step-400: #909a9c;
+    --ion-color-step-450: #858f91;
+    --ion-color-step-500: #798587;
+    --ion-color-step-550: #6e7a7c;
+    --ion-color-step-600: #626f71;
+    --ion-color-step-650: #576467;
+    --ion-color-step-700: #4b595c;
+    --ion-color-step-750: #404e51;
+    --ion-color-step-800: #344347;
+    --ion-color-step-850: #29373c;
+    --ion-color-step-900: #1d2c31;
+    --ion-color-step-950: #122026;
+  }
+  
+  body {
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  // Animations and transitions
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes slideInFromBottom {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  
+  ion-content {
+    --background: linear-gradient(135deg, var(--ion-background-color) 0%, #bdc3c7 100%);
+  }
+  
+  ion-header {
+    ion-toolbar {
+      --background: var(--ion-color-primary);
+      --color: var(--ion-color-primary-contrast);
+      
+      ion-title {
+        font-weight: bold;
+        font-size: 1.2em;
+      }
+    }
+  }
+  
+  ion-card {
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.5s ease-out;
+    transition: transform 0.3s ease;
+  
+    &:hover {
+      transform: translateY(-5px);
+    }
+  
+    ion-card-header {
+      background-color: var(--ion-color-primary);
+      color: var(--ion-color-primary-contrast);
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+    }
+  
+    ion-card-content {
+      padding: 20px;
+    }
+  }
+  
+  ion-button {
+    --border-radius: 10px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+  
+    &:hover {
+      --opacity: 0.8;
+    }
+  
+    &.button-solid {
+      --box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+  }
+  
+  ion-item {
+    --border-radius: 10px;
+    --background: rgba(255, 255, 255, 0.7);
+    margin-bottom: 10px;
+    animation: slideInFromBottom 0.5s ease-out;
+  
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  
+  ion-input, ion-select {
+    --padding-start: 15px;
+    --padding-end: 15px;
+    --padding-top: 15px;
+    --padding-bottom: 15px;
+    --background: rgba(255, 255, 255, 0.5);
+    --border-radius: 10px;
+    margin-top: 5px;
+    transition: background-color 0.3s ease;
+  
+    &:hover, &:focus {
+      --background: rgba(255, 255, 255, 0.8);
+    }
+  }
+  
+  // Custom animations for page transitions
+  ion-router-outlet {
+    animation: fadeIn 0.3s ease-out;
+  }
+  
+  // Add this to your login-registration page component's scss file
+  .login-registration-page {
+    ion-card {
+      max-width: 400px;
+      margin: 20px auto;
+      animation: slideInFromBottom 0.5s ease-out;
+    }
+  
+    .toggle-form-button {
+      margin-top: 20px;
+      --background: transparent;
+      --color: var(--ion-color-primary);
+      font-weight: normal;
+      text-decoration: underline;
+    }
+  }
+  
+  // Add more custom styles for specific components as needed

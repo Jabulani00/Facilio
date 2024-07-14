@@ -1,56 +1,75 @@
-<!-- login-registration.page.html -->
 <ion-header>
   <ion-toolbar>
     <ion-title>{{ isLogin ? 'Login' : 'Registration' }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <form (ngSubmit)="onSubmit()">
-    <ion-item>
-      <ion-label position="floating">Email</ion-label>
-      <ion-input type="email" [(ngModel)]="email" name="email" required></ion-input>
-    </ion-item>
+<ion-content class="ion-padding login-registration-page">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon [name]="isLogin ? 'log-in' : 'person-add'" class="title-icon"></ion-icon>
+        {{ isLogin ? 'Welcome Back' : 'Join Us' }}
+      </ion-card-title>
+    </ion-card-header>
 
-    <ion-item>
-      <ion-label position="floating">Password</ion-label>
-      <ion-input type="password" [(ngModel)]="password" name="password" required></ion-input>
-    </ion-item>
-
-    <ng-container *ngIf="!isLogin">
-      <ion-item>
-        <ion-label position="floating">Confirm Password</ion-label>
-        <ion-input type="password" [(ngModel)]="confirmPassword" name="confirmPassword" required></ion-input>
-      </ion-item>
-
-      <ion-radio-group [(ngModel)]="userType" name="userType">
+    <ion-card-content>
+      <form (ngSubmit)="onSubmit()">
         <ion-item>
-          <ion-label>Service Provider</ion-label>
-          <ion-radio value="sp"></ion-radio>
+          <ion-icon name="mail" slot="start"></ion-icon>
+          <ion-label position="floating">Email</ion-label>
+          <ion-input type="email" [(ngModel)]="email" name="email" required></ion-input>
         </ion-item>
+
         <ion-item>
-          <ion-label>Building Manager</ion-label>
-          <ion-radio value="bm"></ion-radio>
+          <ion-icon name="lock-closed" slot="start"></ion-icon>
+          <ion-label position="floating">Password</ion-label>
+          <ion-input type="password" [(ngModel)]="password" name="password" required></ion-input>
         </ion-item>
-      </ion-radio-group>
 
-      <ion-item>
-        <ion-label>Upload 5 Images</ion-label>
-        <ion-input type="file" (change)="onImageChange($event)" multiple accept="image/*" required></ion-input>
-      </ion-item>
+        <ng-container *ngIf="!isLogin">
+          <ion-item>
+            <ion-icon name="lock-closed" slot="start"></ion-icon>
+            <ion-label position="floating">Confirm Password</ion-label>
+            <ion-input type="password" [(ngModel)]="confirmPassword" name="confirmPassword" required></ion-input>
+          </ion-item>
 
-      <ion-item>
-        <ion-label>Upload Document</ion-label>
-        <ion-input type="file" (change)="onDocumentChange($event)" accept=".pdf,.doc,.docx" required></ion-input>
-      </ion-item>
-    </ng-container>
+          <ion-radio-group [(ngModel)]="userType" name="userType">
+            <ion-item>
+              <ion-icon name="business" slot="start"></ion-icon>
+              <ion-label>Service Provider</ion-label>
+              <ion-radio value="sp"></ion-radio>
+            </ion-item>
+            <ion-item>
+              <ion-icon name="home" slot="start"></ion-icon>
+              <ion-label>Building Manager</ion-label>
+              <ion-radio value="bm"></ion-radio>
+            </ion-item>
+          </ion-radio-group>
 
-    <ion-button expand="block" type="submit" class="ion-margin-top">
-      {{ isLogin ? 'Login' : 'Register' }}
-    </ion-button>
-  </form>
+          <ion-item>
+            <ion-icon name="images" slot="start"></ion-icon>
+            <ion-label position="stacked">Upload 5 Images</ion-label>
+            <ion-input type="file" (change)="onImageChange($event)" multiple accept="image/*" required></ion-input>
+          </ion-item>
 
-  <ion-button expand="block" fill="clear" (click)="toggleForm()">
+          <ion-item>
+            <ion-icon name="document" slot="start"></ion-icon>
+            <ion-label position="stacked">Upload Document</ion-label>
+            <ion-input type="file" (change)="onDocumentChange($event)" accept=".pdf,.doc,.docx" required></ion-input>
+          </ion-item>
+        </ng-container>
+
+        <ion-button expand="block" type="submit" class="ion-margin-top">
+          <ion-icon [name]="isLogin ? 'log-in' : 'person-add'" slot="start"></ion-icon>
+          {{ isLogin ? 'Login' : 'Register' }}
+        </ion-button>
+      </form>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-button expand="block" fill="clear" class="toggle-form-button" (click)="toggleForm()">
+    <ion-icon [name]="isLogin ? 'person-add' : 'log-in'" slot="start"></ion-icon>
     {{ isLogin ? 'Need an account? Register' : 'Already have an account? Login' }}
   </ion-button>
 </ion-content>
