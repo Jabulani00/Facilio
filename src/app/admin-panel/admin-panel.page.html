@@ -1,13 +1,64 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>admin-panel</ion-title>
+    <ion-title>Admin Panel</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">admin-panel</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <ion-list>
+    <ion-item *ngFor="let user of users" (click)="openUserDetails(user)">
+      <ion-label>
+        <h2>{{ user.email }}</h2>
+        <p>Status: {{ user.status }}</p>
+      </ion-label>
+      <ion-button slot="end" (click)="changeUserStatus(user.id, 'approved')">Approve</ion-button>
+      <ion-button slot="end" (click)="changeUserStatus(user.id, 'suspended')">Suspend</ion-button>
+      <ion-button slot="end" (click)="changeUserStatus(user.id, 'blocked')">Block</ion-button>
+    </ion-item>
+  </ion-list>
+
+  <ion-modal *ngIf="selectedUser" [isOpen]="true" (willDismiss)="closeModal()">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>User Details</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="closeModal()">Close</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="ion-padding">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>{{ selectedUser.email }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <p><strong>Name:</strong> {{ selectedUser.name }}</p>
+          <p><strong>Surname:</strong> {{ selectedUser.surname }}</p>
+          <p><strong>Phone Number:</strong> {{ selectedUser.phoneNumber }}</p>
+          <p><strong>Location:</strong> {{ selectedUser.location }}</p>
+          <p><strong>Status:</strong> {{ selectedUser.status }}</p>
+
+          <ion-list>
+            <ion-list-header>
+              <ion-label>Uploaded Images</ion-label>
+            </ion-list-header>
+            <ion-item *ngFor="let imageUrl of selectedUser.imageUrls">
+              <ion-thumbnail slot="start">
+                <img [src]="imageUrl">
+              </ion-thumbnail>
+            </ion-item>
+
+            <ion-list-header>
+              <ion-label>Uploaded Documents</ion-label>
+            </ion-list-header>
+            <ion-item *ngFor="let documentUrl of selectedUser.documentUrls">
+              <ion-icon name="document" slot="start"></ion-icon>
+              <a [href]="documentUrl" target="_blank">{{ documentUrl }}</a>
+            </ion-item>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+    </ion-content>
+  </ion-modal>
 </ion-content>
