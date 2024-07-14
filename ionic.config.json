@@ -1,0 +1,7 @@
+{
+  "name": "Facilio",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
