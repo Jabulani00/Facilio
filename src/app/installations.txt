@@ -1,0 +1,2 @@
+npm install @capacitor/geolocation
+npm install @capacitor/core
