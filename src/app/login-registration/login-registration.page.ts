@@ -53,20 +53,24 @@ export class LoginRegistrationPage {
     }
   }
 
-  async login() {
-    const loading = await this.loadingController.create({ message: 'Logging in...' });
-    await loading.present();
+  // login-registration.page.ts
 
-    try {
-      await this.authService.signIn(this.email, this.password);
-      this.router.navigate(['/dashboard']);
-    } catch (error) {
-      console.error('Login error', error);
-      this.showAlert('Login Failed', 'Please check your credentials and try again.');
-    } finally {
-      loading.dismiss();
-    }
+async login() {
+  const loading = await this.loadingController.create({ message: 'Logging in...' });
+  await loading.present();
+
+  try {
+    await this.authService.signIn(this.email, this.password);
+    // Navigate to UserProfilePage on successful login
+    this.router.navigate(['/user-profile']);
+  } catch (error) {
+    console.error('Login error', error);
+    this.showAlert('Login Failed', 'Please check your credentials and try again.');
+  } finally {
+    loading.dismiss();
   }
+}
+
 
   async register() {
     if (this.password !== this.confirmPassword) {
