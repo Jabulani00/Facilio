@@ -4,61 +4,84 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <ion-list>
-    <ion-item *ngFor="let user of users" (click)="openUserDetails(user)">
-      <ion-label>
-        <h2>{{ user.email }}</h2>
-        <p>Status: {{ user.status }}</p>
-      </ion-label>
-      <ion-button slot="end" (click)="changeUserStatus(user.id, 'approved')">Approve</ion-button>
-      <ion-button slot="end" (click)="changeUserStatus(user.id, 'suspended')">Suspend</ion-button>
-      <ion-button slot="end" (click)="changeUserStatus(user.id, 'blocked')">Block</ion-button>
-    </ion-item>
-  </ion-list>
+<ion-content class="ion-padding admin-panel-page">
+  <ion-card *ngFor="let user of users">
+    <ion-card-header>
+      <ion-card-title>{{ user.email }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p><strong>User Type:</strong> {{ user.userType }}</p>
+      <p><strong>Status:</strong> {{ user.status }}</p>
+      <p *ngIf="user.userType === 'sp'"><strong>Name:</strong> {{ user.name }} {{ user.surname }}</p>
+      <p *ngIf="user.userType === 'sp'"><strong>Phone Number:</strong> {{ user.phoneNumber }}</p>
+      <p *ngIf="user.userType === 'sp'"><strong>Location:</strong> {{ user.location }}</p>
+      <p *ngIf="user.userType === 'sp'"><strong>Services:</strong> {{ user.services }}</p>
+      <p *ngIf="user.userType === 'bm'"><strong>Building Name:</strong> {{ user.buildingName }}</p>
+      <p *ngIf="user.userType === 'bm'"><strong>Building Type:</strong> {{ user.buildingType }}</p>
+      <p *ngIf="user.userType === 'bm'"><strong>Location:</strong> {{ user.location }}</p>
+      <p *ngIf="user.userType === 'bm'"><strong>Manager Name:</strong> {{ user.name }}</p>
+      <p *ngIf="user.userType === 'bm'"><strong>Manager Phone Number:</strong> {{ user.phoneNumber }}</p>
 
-  <ion-modal *ngIf="selectedUser" [isOpen]="true" (willDismiss)="closeModal()">
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>User Details</ion-title>
-        <ion-buttons slot="end">
-          <ion-button (click)="closeModal()">Close</ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
+      <ion-label>Change Status</ion-label>
+      <ion-select [(ngModel)]="user.status" (ionChange)="changeUserStatus(user)">
+        <ion-select-option value="approved">Approve</ion-select-option>
+        <ion-select-option value="blocked">Block</ion-select-option>
+        <ion-select-option value="suspended">Suspend</ion-select-option>
+      </ion-select>
 
-    <ion-content class="ion-padding">
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title>{{ selectedUser.email }}</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-          <p><strong>Name:</strong> {{ selectedUser.name }}</p>
-          <p><strong>Surname:</strong> {{ selectedUser.surname }}</p>
-          <p><strong>Phone Number:</strong> {{ selectedUser.phoneNumber }}</p>
-          <p><strong>Location:</strong> {{ selectedUser.location }}</p>
-          <p><strong>Status:</strong> {{ selectedUser.status }}</p>
+      <ion-item>
+        <ion-label>Images</ion-label>
+        <ion-button (click)="viewImages(user.imageUrls)">View Images</ion-button>
+      </ion-item>
 
-          <ion-list>
-            <ion-list-header>
-              <ion-label>Uploaded Images</ion-label>
-            </ion-list-header>
-            <ion-item *ngFor="let imageUrl of selectedUser.imageUrls">
-              <ion-thumbnail slot="start">
-                <img [src]="imageUrl">
-              </ion-thumbnail>
-            </ion-item>
+      <ion-item>
+        <ion-label>Documents</ion-label>
+        <ion-button (click)="viewDocuments(user.documentUrls)">View Documents</ion-button>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
 
-            <ion-list-header>
-              <ion-label>Uploaded Documents</ion-label>
-            </ion-list-header>
-            <ion-item *ngFor="let documentUrl of selectedUser.documentUrls">
-              <ion-icon name="document" slot="start"></ion-icon>
-              <a [href]="documentUrl" target="_blank">{{ documentUrl }}</a>
-            </ion-item>
-          </ion-list>
-        </ion-card-content>
-      </ion-card>
-    </ion-content>
+  <!-- Modal for images -->
+  <ion-modal [isOpen]="isImageModalOpen" (ionModalDidDismiss)="closeModal()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Images</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeModal()">Close</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-slides pager="true">
+          <ion-slide *ngFor="let file of currentFiles">
+            <ion-img [src]="file" class="image-preview"></ion-img>
+          </ion-slide>
+        </ion-slides>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <!-- Modal for documents -->
+  <ion-modal [isOpen]="isDocumentModalOpen" (ionModalDidDismiss)="closeModal()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Documents</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeModal()">Close</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-list>
+          <ion-item *ngFor="let file of currentFiles">
+            <ion-label>
+              <a [href]="file" target="_blank">View Document</a>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ng-template>
   </ion-modal>
 </ion-content>
