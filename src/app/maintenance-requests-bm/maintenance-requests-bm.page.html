@@ -5,9 +5,33 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">maintenance-requests-bm</ion-title>
-    </ion-toolbar>
-  </ion-header>
-</ion-content>
+  <form (ngSubmit)="submitRequest()">
+    <ion-item>
+      <ion-label>Maintenance Type</ion-label>
+      <ion-select [(ngModel)]="maintenance.type" name="type" required>
+        <ion-select-option *ngFor="let type of maintenanceTypes" [value]="type">{{ type }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Description</ion-label>
+      <ion-textarea [(ngModel)]="maintenance.description" name="description" required></ion-textarea>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Floor</ion-label>
+      <ion-input type="number" [(ngModel)]="maintenance.floor" name="floor" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Room</ion-label>
+      <ion-input type="text" [(ngModel)]="maintenance.room" name="room" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Upload Images</ion-label>
+      <input type="file" (change)="uploadFiles($event)" multiple>
+    </ion-item>
+
+    <ion-button expand="full" type="submit">Submit Request</ion-button>
+  </form>
