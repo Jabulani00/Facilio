@@ -3,6 +3,8 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AlertController, LoadingController, ModalController } from '@ionic/angular';
 import { UserProfileService } from '../services/user-profile.service';
 import { FileStorageService } from '../services/file-storage.service';
+import emailjs from 'emailjs-com';
+
 
 @Component({
   selector: 'app-admin-panel',
@@ -74,10 +76,24 @@ export class AdminPanelPage implements OnInit {
     const loading = await this.loadingController.create({ message: 'Updating status...' });
     await loading.present();
 
-    this.firestore.collection('users').doc(user.id).update({ status: newStatus }).then(() => {
+    this.firestore.collection('users').doc(user.id).update({ status: newStatus }).then(async () => {
+
+      
+
+      console.log('Email successfully sent');
       loading.dismiss();
       this.showAlert('Status Updated', 'User status has been updated successfully.');
       user.status = newStatus;
+
+      const emailParams = {
+        name: user.name,
+        email_to: user.email,
+        from_email: 'Facilio',
+        subject: 'Facilio Account',
+        message: 'This email is to inform you that your account has been  ' + newStatus
+      };
+  
+      await emailjs.send('service_8ept2vs', 'template_315hlk4', emailParams, '14hVEtErTwfVvDBtn');
       this.updateUserCounts();
     }).catch(error => {
       console.error('Error updating status', error);
