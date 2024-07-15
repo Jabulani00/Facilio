@@ -13,7 +13,7 @@ import { DashboardSpPage } from './dashboard-sp.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    DashboardSpPageRoutingModule
+    DashboardSpPageRoutingModule,
   ],
   declarations: [DashboardSpPage]
 })

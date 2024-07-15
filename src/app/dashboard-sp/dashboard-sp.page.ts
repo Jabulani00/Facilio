@@ -22,11 +22,16 @@ export class DashboardSpPage implements OnInit {
 
   async fetchMaintenanceRequests() {
     this.maintenanceRequestService.getRequests().subscribe((requests: any[]) => {
-      this.maintenanceRequests = requests;
+      this.maintenanceRequests = requests.map(request => ({
+        ...request,
+        images: request.images || [], // Ensure images field is included
+        email: request.email || '' // Ensure email field is included
+      }));
     });
   }
 
   async openRequestModal(request: any) {
+    console.log('Opening request modal with request:', request); // Debug log
     const modal = await this.modalController.create({
       component: ExploreContainerComponent,
       componentProps: {
