@@ -1,0 +1,68 @@
+.dashboard-card {
+    text-align: center;
+    background: linear-gradient(135deg, #4e54c8, #8f94fb);
+    color: white;
+  
+    ion-card-header {
+      background: rgba(255, 255, 255, 0.1);
+    }
+  
+    h2 {
+      font-size: 2.5em;
+      margin: 0.5em 0;
+    }
+  }
+  
+  ion-segment {
+    margin-bottom: 1em;
+  }
+  
+  .user-item {
+    --background: #f4f5f8;
+    margin-bottom: 0.5em;
+    border-radius: 8px;
+  
+    ion-label {
+      h2 {
+        font-weight: bold;
+      }
+    }
+  
+    ion-button {
+      margin-right: 0.5em;
+    }
+  }
+  
+  .file-preview {
+    max-width: 100%;
+    max-height: 70vh;
+    object-fit: contain;
+  }
+  
+  ion-slides {
+    height: 70vh;
+  }
+  
+  // Mobile-specific styles
+  @media (max-width: 768px) {
+    .dashboard-card {
+      h2 {
+        font-size: 2em;
+      }
+    }
+  
+    ion-segment {
+      font-size: 0.9em;
+    }
+  
+    .user-item {
+      ion-label {
+        h2 {
+          font-size: 1em;
+        }
+        p {
+          font-size: 0.9em;
+        }
+      }
+    }
+  }
