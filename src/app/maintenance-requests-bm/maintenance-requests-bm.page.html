@@ -1,37 +1,43 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>maintenance-requests-bm</ion-title>
+    <ion-title>Maintenance Request</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="ion-padding">
   <form (ngSubmit)="submitRequest()">
     <ion-item>
-      <ion-label>Maintenance Type</ion-label>
+      <ion-label position="stacked">Maintenance Type</ion-label>
       <ion-select [(ngModel)]="maintenance.type" name="type" required>
         <ion-select-option *ngFor="let type of maintenanceTypes" [value]="type">{{ type }}</ion-select-option>
       </ion-select>
     </ion-item>
 
     <ion-item>
-      <ion-label position="floating">Description</ion-label>
-      <ion-textarea [(ngModel)]="maintenance.description" name="description" required></ion-textarea>
+      <ion-label position="stacked">Description</ion-label>
+      <ion-textarea [(ngModel)]="maintenance.description" name="description" required rows="4"></ion-textarea>
     </ion-item>
 
     <ion-item>
-      <ion-label position="floating">Floor</ion-label>
+      <ion-label position="stacked">Floor</ion-label>
       <ion-input type="number" [(ngModel)]="maintenance.floor" name="floor" required></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-label position="floating">Room</ion-label>
+      <ion-label position="stacked">Room</ion-label>
       <ion-input type="text" [(ngModel)]="maintenance.room" name="room" required></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-label>Upload Images</ion-label>
-      <input type="file" (change)="uploadFiles($event)" multiple>
+      <ion-label position="stacked">Upload Images</ion-label>
+      <ion-input type="file" (change)="uploadFiles($event)" multiple accept="image/*"></ion-input>
     </ion-item>
 
-    <ion-button expand="full" type="submit">Submit Request</ion-button>
+    <ion-item *ngIf="maintenance.images.length > 0">
+      <ion-label>Uploaded Images:</ion-label>
+      <ion-badge color="success" slot="end">{{ maintenance.images.length }}</ion-badge>
+    </ion-item>
+
+    <ion-button expand="block" type="submit" class="ion-margin-top">Submit Request</ion-button>
   </form>
+</ion-content>

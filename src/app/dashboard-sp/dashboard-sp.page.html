@@ -1,22 +1,58 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>maintenance-requests-sp</ion-title>
+    <ion-title>Maintenance Requests</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <div class="container">
-    <div *ngFor="let request of maintenanceRequests" class="card" (click)="openRequestModal(request)">
-      <h3>Type: {{ request.type }}</h3>
-      <p>Floor: {{ request.floor }}</p>
-      <p>Room: {{ request.room }}</p>
-      <p>Status: {{ request.status }}</p>
-      <div *ngIf="request.images && request.images.length > 0">
-        <p>Images:</p>
-        <div *ngFor="let imageUrl of request.images">
-          <img [src]="imageUrl" alt="Maintenance Image" />
-        </div>
-      </div>
-    </div>
+<ion-content [fullscreen]="true" class="dashboard-content">
+  <div class="filter-container">
+    <ion-item>
+      <ion-label>Filter by Type</ion-label>
+      <ion-select [(ngModel)]="selectedFilter" (ionChange)="onFilterChange()">
+        <ion-select-option *ngFor="let type of maintenanceTypes" [value]="type">{{ type }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Search</ion-label>
+      <ion-input [(ngModel)]="searchTerm" (ionInput)="onFilterChange()" placeholder="Search by description..."></ion-input>
+    </ion-item>
   </div>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-md="6" *ngFor="let request of filteredRequests">
+        <ion-card class="request-card">
+          <ion-card-header>
+            <ion-card-title>{{ request.type }}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <p><strong>Description:</strong> {{ request.description }}</p>
+            <p><strong>Floor:</strong> {{ request.floor }}</p>
+            <p><strong>Room:</strong> {{ request.room }}</p>
+            <div class="image-gallery">
+              <ion-img *ngFor="let imageUrl of request.images" [src]="imageUrl" class="thumbnail" (click)="openImageModal(imageUrl)"></ion-img>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- Image Modal -->
+  <ion-modal [isOpen]="!!selectedImage" (didDismiss)="closeImageModal()">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Image</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="closeImageModal()">Close</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <div class="image-container">
+        <ion-img [src]="selectedImage"></ion-img>
+      </div>
+    </ion-content>
+  </ion-modal>
 </ion-content>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MaintenanceRequestService } from '../services/maintenance-request.service';
 import { FileStorageService } from '../services/file-storage.service';
+import { AlertController, LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-maintenance-requests-bm',
@@ -30,7 +31,9 @@ export class MaintenanceRequestsBmPage implements OnInit {
 
   constructor(
     private maintenanceRequestService: MaintenanceRequestService,
-    private fileStorageService: FileStorageService
+    private fileStorageService: FileStorageService,
+    private alertController: AlertController,
+    private loadingController: LoadingController
   ) {}
 
   ngOnInit(): void {
@@ -38,25 +41,39 @@ export class MaintenanceRequestsBmPage implements OnInit {
   }
 
   async submitRequest() {
+    if (!this.isFormValid()) {
+      this.showAlert('Invalid Form', 'Please fill in all required fields.');
+      return;
+    }
+
+    const loading = await this.loadingController.create({
+      message: 'Submitting request...',
+    });
+    await loading.present();
+
     try {
-      const docRef = await this.maintenanceRequestService.createRequest(this.maintenance);
-      console.log('Maintenance request submitted!');
-      if (this.maintenance.images.length > 0) {
-        const saveImagePromises = this.maintenance.images.map(imageUrl =>
-          this.maintenanceRequestService.saveImageUrl(docRef.id, imageUrl)
-        );
-        await Promise.all(saveImagePromises);
-        console.log('Image URLs saved successfully!');
-      }
+      // Create the request with image URLs included
+      await this.maintenanceRequestService.createRequest(this.maintenance);
+      loading.dismiss();
+      this.showAlert('Success', 'Maintenance request submitted successfully!');
+      this.clearForm();
     } catch (error) {
+      loading.dismiss();
+      this.showAlert('Error', 'Failed to submit maintenance request. Please try again.');
       console.error('Error submitting maintenance request:', error);
     }
   }
 
   async uploadFiles(event: any) {
     const files = event.target.files;
-    const filePromises = [];
+    if (files.length === 0) return;
 
+    const loading = await this.loadingController.create({
+      message: 'Uploading files...',
+    });
+    await loading.present();
+
+    const filePromises = [];
     for (let file of files) {
       const uploadObservable = this.fileStorageService.uploadFile(file, 'maintenance-requests');
       const filePromise = uploadObservable.toPromise().then(downloadURL => {
@@ -66,15 +83,44 @@ export class MaintenanceRequestsBmPage implements OnInit {
       }).catch(error => {
         console.error('Error uploading file:', error);
       });
-
       filePromises.push(filePromise);
     }
 
     try {
       await Promise.all(filePromises);
-      console.log('All files uploaded successfully!');
+      loading.dismiss();
+      this.showAlert('Success', 'All files uploaded successfully!');
     } catch (error) {
+      loading.dismiss();
+      this.showAlert('Error', 'Failed to upload some files. Please try again.');
       console.error('Error uploading files:', error);
     }
+  }
+
+  private isFormValid(): boolean {
+    return this.maintenance.type !== '' &&
+           this.maintenance.description !== '' &&
+           this.maintenance.floor !== '' &&
+           this.maintenance.room !== '';
+  }
+
+  private clearForm() {
+    this.maintenance = {
+      type: '',
+      description: '',
+      floor: '',
+      room: '',
+      status: 'pending',
+      images: []
+    };
+  }
+
+  private async showAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header,
+      message,
+      buttons: ['OK']
+    });
+    await alert.present();
   }
 }

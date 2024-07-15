@@ -1,0 +1,37 @@
+<!-- welcome.page.html -->
+<ion-content class="ion-padding">
+  <div class="welcome-container">
+    <h1 class="app-title">Welcome to Facilio</h1>
+    <p class="app-subtitle">Streamlined Building Maintenance Management</p>
+
+    <div class="feature-list">
+      <ion-card *ngFor="let feature of features; let i = index" class="feature-{{i}}">
+        <ion-card-header>
+          <ion-icon [name]="feature.icon" class="feature-icon"></ion-icon>
+          <ion-card-title>{{ feature.title }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          {{ feature.description }}
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <div class="info-section">
+      <h2>About Facilio</h2>
+      <p>Facilio is a comprehensive platform that connects Building Managers with Service Providers, streamlining the maintenance and repair process for buildings. Our app offers:</p>
+      <ul>
+        <li>Easy posting and management of maintenance requests</li>
+        <li>Access to a network of qualified service providers</li>
+        <li>Real-time notifications and status updates</li>
+        <li>Secure in-app messaging system</li>
+        <li>Ratings and reviews for quality assurance</li>
+        <li>Admin panel for efficient user and role management</li>
+      </ul>
+    </div>
+
+    <ion-button expand="block" (click)="navigateToLogin()" class="login-button">
+      <ion-icon name="log-in-outline" slot="start"></ion-icon>
+      Login / Register
+    </ion-button>
+  </div>
+</ion-content>

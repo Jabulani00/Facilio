@@ -1,0 +1,179 @@
+/* Add animations to title and subtitle */
+.app-title {
+    animation: fadeInDown 1s ease-out;
+  }
+  
+  .app-subtitle {
+    animation: fadeInUp 1s ease-out 0.5s both;
+  }
+  
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Adjust feature card animation */
+  .feature-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  ion-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    width: calc(45% - 1rem);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin: 1rem;
+  }
+  
+  ion-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  }
+  
+  .feature-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+  
+  /* Styling for information section */
+  .info-section {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    text-align: left;
+  }
+  
+  .info-section h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .info-section ul {
+    padding-left: 2rem;
+  }
+  
+  /* Login button styling */
+  .login-button {
+    max-width: 300px;
+    margin: 0 auto;
+    --background: #ffffff;
+    --color: #3880ff;
+    font-weight: bold;
+    transition: transform 0.3s ease;
+    margin-top: 2rem;
+  }
+  
+  .login-button:hover {
+    transform: scale(1.1);
+  }
+/* welcome.page.scss */
+.welcome-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh; /* Use viewport height for full-screen */
+    background: linear-gradient(135deg, #3880ff, #2dd36f); /* Vibrant gradient */
+    color: white;
+    text-align: center;
+    padding: 2rem; /* Add padding for spacing */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Subtle shadow for container */
+  }
+  
+  .app-title {
+    font-size: 3rem; /* Larger title font size */
+    font-weight: bold;
+    margin-bottom: 1rem; /* Slightly reduced margin */
+  }
+  
+  .app-subtitle {
+    font-size: 1.5rem; /* Larger subtitle font size */
+    margin-bottom: 2rem;
+  }
+  
+  /* Adjustments for feature cards */
+  .feature-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem; /* Increased gap between cards */
+    margin-bottom: 2rem;
+  }
+  
+  ion-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    width: calc(45% - 1rem); /* Adjust card width for better spacing */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin: 1rem; /* Provide margin around cards */
+  }
+  
+  ion-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* Enhanced box shadow on hover */
+  }
+  
+  .feature-icon {
+    font-size: 3rem; /* Larger icon size */
+    margin-bottom: 1rem;
+  }
+  
+  /* Styling for information section */
+  .info-section {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    text-align: left;
+  }
+  
+  .info-section h2 {
+    font-size: 2rem; /* Larger section heading */
+    margin-bottom: 1.5rem;
+  }
+  
+  .info-section ul {
+    padding-left: 2rem; /* Adjusted padding for better list indentation */
+  }
+  
+  /* Login button styling */
+  .login-button {
+    max-width: 300px;
+    margin: 0 auto;
+    --background: #ffffff;
+    --color: #3880ff;
+    font-weight: bold;
+    transition: transform 0.3s ease;
+    margin-top: 2rem; /* Added margin top for spacing */
+  }
+  
+  .login-button:hover {
+    transform: scale(1.1); /* Slightly increased hover scale */
+  }
+    
