@@ -1,2 +1,3 @@
 npm install @capacitor/geolocation
 npm install @capacitor/core
+npm install animate.css

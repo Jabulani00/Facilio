@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-
 import { MaintenanceRequestService } from '../services/maintenance-request.service';
+import { Browser } from '@capacitor/browser';
+import { ModalController } from '@ionic/angular';
+import { ExploreContainerComponent } from '../explore-container/explore-container.component';
 
 @Component({
   selector: 'app-dashboard-sp',
@@ -12,7 +14,6 @@ export class DashboardSpPage implements OnInit {
   filteredRequests: any[] = [];
   selectedFilter: string = 'All';
   searchTerm: string = '';
-  selectedImage: string | null = null;
 
   maintenanceTypes = [
     'All',
@@ -26,7 +27,10 @@ export class DashboardSpPage implements OnInit {
     'Water Damage'
   ];
 
-  constructor(private maintenanceRequestService: MaintenanceRequestService) {}
+  constructor(
+    private maintenanceRequestService: MaintenanceRequestService,
+    private modalController: ModalController
+  ) {}
 
   ngOnInit(): void {
     this.fetchMaintenanceRequests();
@@ -51,11 +55,65 @@ export class DashboardSpPage implements OnInit {
     this.applyFilter();
   }
 
-  openImageModal(imageUrl: string) {
-    this.selectedImage = imageUrl;
+  getIconForType(type: string): string {
+    const iconMap: { [key: string]: string } = {
+      'Plumbing Issues': 'water-outline',
+      'Electrical Issues': 'flash-outline',
+      'HVAC Issues': 'thermometer-outline',
+      'Structural Issues': 'build-outline',
+      'Appliance Issues': 'hardware-chip-outline',
+      'Safety Issues': 'shield-checkmark-outline',
+      'General Maintenance': 'construct-outline',
+      'Water Damage': 'water-outline'
+    };
+    return (type in iconMap) ? iconMap[type] : 'construct-outline';
   }
 
-  closeImageModal() {
-    this.selectedImage = null;
+  async openGallery(images: string[]) {
+    if (images && images.length > 0) {
+      await Browser.open({ url: images[0] });
+    }
+  }
+
+  async takeIssue(request: any) {
+    const modal = await this.modalController.create({
+      component: ExploreContainerComponent,
+      componentProps: {
+        request: request
+      }
+    });
+
+    modal.onDidDismiss().then((result) => {
+      if (result.data) {
+        // Update the request with the new data
+        this.updateRequest(request.id, result.data);
+      }
+    });
+
+    return await modal.present();
+  }
+
+ updateRequest(requestId: string, newData: any) {
+  this.maintenanceRequestService.updateRequest(requestId, newData)
+    .then(() => {
+      console.log('Request updated successfully');
+      // Update local data if needed
+    })
+    .catch((error: any) => {
+      console.error('Error updating request:', error);
+    });
+}
+
+  updateStatus(request: any) {
+    this.updateRequest(request.id, { status: request.status });
+  }
+  
+  addComment(requestId: string, comment: string) {
+    const request = this.filteredRequests.find(r => r.id === requestId);
+    if (request) {
+      const updatedComments = [...(request.comments || []), { text: comment, date: new Date() }];
+      this.updateRequest(requestId, { comments: updatedComments });
+      request.newComment = '';
+    }
   }
 }
