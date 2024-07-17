@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { AnimationController } from '@ionic/angular';
 
+import { AuthenticationService } from '../services/authentication.service';
+import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
+
 @Component({
   selector: 'app-bm-dash',
   templateUrl: './bm-dash.page.html',
@@ -43,7 +47,10 @@ export class BmDashPage implements OnInit {
 
   constructor(
     private navCtrl: NavController,
-    private animationCtrl: AnimationController
+    private animationCtrl: AnimationController,
+    private authService: AuthenticationService,
+    private router: Router,
+    private alertController: AlertController
   ) {}
 
   ngOnInit() {
@@ -67,5 +74,42 @@ export class BmDashPage implements OnInit {
       
       animation.play();
     });
+  }
+
+  async logout() {
+    const alert = await this.alertController.create({
+      header: 'Logout',
+      message: 'Are you sure you want to logout?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        },
+        {
+          text: 'Logout',
+          handler: () => {
+            this.authService.signOut()
+              .then(() => {
+                this.router.navigate(['/login-registration']);
+              })
+              .catch(error => {
+                console.error('Logout error', error);
+                this.showAlert('Logout Failed', 'An error occurred during logout. Please try again.');
+              });
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  async showAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header,
+      message,
+      buttons: ['OK']
+    });
+    await alert.present();
   }
 }

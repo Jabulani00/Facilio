@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login-registration',
@@ -15,6 +16,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
   styleUrls: ['./login-registration.page.scss'],
 })
 export class LoginRegistrationPage {
+  count?: number;
   isLogin = true;
   email: string = '';
   password: string = '';
@@ -61,18 +63,22 @@ export class LoginRegistrationPage {
       await loading.present();
   
       // Check for admin login
-      if (this.email === 'admin@facilio.com' && this.password === 'adminfacilio3') {
+      if (this.email === 'admin@example.com' && this.password === 'adminpassword') {
         await loading.dismiss();
         this.router.navigate(['/admin-dash']);
         return;
       }
   
       // Attempt to sign in
-      await this.authService.signIn(this.email, this.password);
+      const userCredential = await this.authService.signIn(this.email, this.password);
+      const userId = userCredential.user.uid;
   
       // Fetch user profile based on email
-      this.userProfileService.getUserProfile(this.email).subscribe({
-        next: (userProfile) => {
+      this.userProfileService.getUserProfile(this.email).pipe(
+        // Use first() to complete the observable after the first emission
+        first()
+      ).subscribe({
+        next: async (userProfile) => {
           if (!userProfile) {
             this.showAlert('Login Failed', 'User profile not found.');
             loading.dismiss();
@@ -94,6 +100,13 @@ export class LoginRegistrationPage {
               loading.dismiss();
               break;
             default:
+              // Increment the login count only for successful logins
+              const currentCount = userProfile.count || 0;
+              const newCount = currentCount + 1;
+  
+              // Update the user profile with the new count
+              await this.userProfileService.updateUserProfile(userId, { count: newCount }).toPromise();
+  
               // Navigate based on userType
               if (userProfile.userType === 'sp') {
                 this.router.navigate(['/sp-dash']);
@@ -122,7 +135,6 @@ export class LoginRegistrationPage {
       }
     }
   }
-  
   
 
   async register() {
