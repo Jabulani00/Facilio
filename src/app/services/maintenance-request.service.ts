@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import firebase from 'firebase/compat/app';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -40,6 +41,23 @@ export class MaintenanceRequestService {
           throw new Error('No matching document found');
         }
       });
+    }
+
+    deleteServiceProviderByIdAndEmail(requestId: string, email: string): Promise<void> {
+      return this.firestore.collection('maintenanceRequests')
+        .ref.where('id', '==', requestId)
+        .where('serviceProvider.email', '==', email)
+        .get()
+        .then(snapshot => {
+          if (!snapshot.empty) {
+            const docRef = snapshot.docs[0].ref;
+            return docRef.update({
+              'serviceProvider': firebase.firestore.FieldValue.delete()
+            });
+          } else {
+            throw new Error('No matching document found');
+          }
+        });
     }
 
   // createRequest(maintenance: any): Promise<any> {
