@@ -87,7 +87,7 @@ export class LoginRegistrationPage {
               break;
             default:
               // Navigate to UserProfilePage on successful login
-              this.router.navigate(['/user-profile']);
+              this.router.navigate(['/dashboard-sp']);
               loading.dismiss(); // Dismiss loading indicator
               break;
           }

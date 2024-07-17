@@ -1,49 +1,68 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>User Profile</ion-title>
+    <ion-title>
+      <ion-icon name="person-circle-outline"></ion-icon>
+      User Profile
+    </ion-title>
     <ion-buttons slot="end">
       <ion-button class="edit-button" (click)="toggleEditMode()">
+        <ion-icon [name]="isEditMode ? 'save-outline' : 'create-outline'"></ion-icon>
         {{ isEditMode ? 'Save' : 'Edit' }}
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <ion-card *ngIf="userData">
+<ion-content class="ion-padding profile-content">
+  <ion-card class="profile-card" *ngIf="userData">
     <ion-card-header>
-      <ion-card-title>{{ userData.userType === 'sp' ? 'Service Provider' : 'Building Manager' }}</ion-card-title>
+      <ion-card-title>
+        <ion-icon [name]="userData.userType === 'sp' ? 'briefcase-outline' : 'business-outline'"></ion-icon>
+        {{ userData.userType === 'sp' ? 'Service Provider' : 'Building Manager' }}
+      </ion-card-title>
     </ion-card-header>
 
     <ion-card-content>
       <ion-item>
-        <ion-label>Email:</ion-label>
+        <ion-label>
+          <ion-icon name="mail-outline"></ion-icon> Email:
+        </ion-label>
         <ion-text>{{ userData.email }}</ion-text>
       </ion-item>
 
       <ng-container *ngIf="userData.userType === 'sp'">
         <ion-item>
-          <ion-label>Name:</ion-label>
+          <ion-label>
+            <ion-icon name="person-outline"></ion-icon> Name:
+          </ion-label>
           <ion-input *ngIf="isEditMode" [(ngModel)]="userData.name"></ion-input>
           <ion-text *ngIf="!isEditMode">{{ userData.name }}</ion-text>
         </ion-item>
         <ion-item>
-          <ion-label>Surname:</ion-label>
+          <ion-label>
+            <ion-icon name="person-outline"></ion-icon> Surname:
+          </ion-label>
           <ion-input *ngIf="isEditMode" [(ngModel)]="userData.surname"></ion-input>
           <ion-text *ngIf="!isEditMode">{{ userData.surname }}</ion-text>
         </ion-item>
         <ion-item>
-          <ion-label>Phone Number:</ion-label>
+          <ion-label>
+            <ion-icon name="call-outline"></ion-icon> Phone Number:
+          </ion-label>
           <ion-input *ngIf="isEditMode" [(ngModel)]="userData.phoneNumber"></ion-input>
           <ion-text *ngIf="!isEditMode">{{ userData.phoneNumber }}</ion-text>
         </ion-item>
         <ion-item>
-          <ion-label>Location:</ion-label>
+          <ion-label>
+            <ion-icon name="location-outline"></ion-icon> Location:
+          </ion-label>
           <ion-input *ngIf="isEditMode" [(ngModel)]="userData.location"></ion-input>
           <ion-text *ngIf="!isEditMode">{{ userData.location }}</ion-text>
         </ion-item>
         <ion-item>
-          <ion-label>Services:</ion-label>
+          <ion-label>
+            <ion-icon name="construct-outline"></ion-icon> Services:
+          </ion-label>
           <ion-input *ngIf="isEditMode" [(ngModel)]="userData.services"></ion-input>
           <ion-text *ngIf="!isEditMode">{{ userData.services }}</ion-text>
         </ion-item>
@@ -51,41 +70,55 @@
 
       <ng-container *ngIf="userData.userType === 'bm'">
         <ion-item>
-          <ion-label>Building Name:</ion-label>
+          <ion-label>
+            <ion-icon name="business-outline"></ion-icon> Building Name:
+          </ion-label>
           <ion-input *ngIf="isEditMode" [(ngModel)]="userData.buildingName"></ion-input>
           <ion-text *ngIf="!isEditMode">{{ userData.buildingName }}</ion-text>
         </ion-item>
         <ion-item>
-          <ion-label>Building Type:</ion-label>
+          <ion-label>
+            <ion-icon name="home-outline"></ion-icon> Building Type:
+          </ion-label>
           <ion-input *ngIf="isEditMode" [(ngModel)]="userData.buildingType"></ion-input>
           <ion-text *ngIf="!isEditMode">{{ userData.buildingType }}</ion-text>
         </ion-item>
         <ion-item>
-          <ion-label>Location:</ion-label>
+          <ion-label>
+            <ion-icon name="location-outline"></ion-icon> Location:
+          </ion-label>
           <ion-input *ngIf="isEditMode" [(ngModel)]="userData.location"></ion-input>
           <ion-text *ngIf="!isEditMode">{{ userData.location }}</ion-text>
         </ion-item>
         <ion-item>
-          <ion-label>Manager Name:</ion-label>
+          <ion-label>
+            <ion-icon name="person-outline"></ion-icon> Manager Name:
+          </ion-label>
           <ion-input *ngIf="isEditMode" [(ngModel)]="userData.name"></ion-input>
           <ion-text *ngIf="!isEditMode">{{ userData.name }}</ion-text>
         </ion-item>
         <ion-item>
-          <ion-label>Manager Phone Number:</ion-label>
+          <ion-label>
+            <ion-icon name="call-outline"></ion-icon> Manager Phone Number:
+          </ion-label>
           <ion-input *ngIf="isEditMode" [(ngModel)]="userData.phoneNumber"></ion-input>
           <ion-text *ngIf="!isEditMode">{{ userData.phoneNumber }}</ion-text>
         </ion-item>
       </ng-container>
 
       <ion-item>
-        <ion-label>Status:</ion-label>
+        <ion-label>
+          <ion-icon name="checkmark-circle-outline"></ion-icon> Status:
+        </ion-label>
         <ion-text>{{ userData.status }}</ion-text>
       </ion-item>
 
       <ion-item>
         <ion-label>
           <div class="image-section">
-            <div class="section-title">Images:</div>
+            <div class="section-title">
+              <ion-icon name="images-outline"></ion-icon> Images:
+            </div>
             <div class="image-container">
               <div *ngFor="let imageUrl of userData.imageUrls; let i = index" class="image-item">
                 <img [src]="imageUrl" alt="User Image" (click)="openLightbox(imageUrl)">
@@ -95,33 +128,41 @@
               </div>
             </div>
             <input type="file" accept="image/*" (change)="uploadImage($event)" [hidden]="!isEditMode" #fileInput>
-            <ion-button *ngIf="isEditMode" (click)="fileInput.click()">Upload Image</ion-button>
+            <ion-button *ngIf="isEditMode" (click)="fileInput.click()">
+              <ion-icon name="cloud-upload-outline"></ion-icon> Upload Image
+            </ion-button>
           </div>
         </ion-label>
       </ion-item>
       <ion-item>
         <ion-label>
           <div class="document-section">
-            <div class="section-title">Documents:</div>
+            <div class="section-title">
+              <ion-icon name="document-outline"></ion-icon> Documents:
+            </div>
             <div class="document-list">
               <div *ngFor="let docUrl of userData.documentUrls; let i = index" class="document-item">
-                <a [href]="docUrl" target="_blank">View Document</a>
+                <a [href]="docUrl" target="_blank">
+                  <ion-icon name="document-text-outline"></ion-icon> View Document
+                </a>
                 <ion-button *ngIf="isEditMode" fill="clear" (click)="deleteDocument(i)">
                   <ion-icon name="trash-outline"></ion-icon>
                 </ion-button>
               </div>
             </div>
-            <ion-button *ngIf="isEditMode" (click)="addDocument()">Add Document</ion-button>
+            <ion-button *ngIf="isEditMode" (click)="addDocument()">
+              <ion-icon name="add-circle-outline"></ion-icon> Add Document
+            </ion-button>
           </div>
         </ion-label>
       </ion-item>
     </ion-card-content>
   </ion-card>
-</ion-content>
 
-<div id="lightbox" class="lightbox" (click)="closeLightbox($event)">
-  <div class="lightbox-content">
-    <img id="lightbox-img" src="">
-    <button class="close-button" (click)="closeLightbox($event)">×</button>
+  <div id="lightbox" class="lightbox" (click)="closeLightbox($event)">
+    <div class="lightbox-content">
+      <img id="lightbox-img" src="">
+      <button class="close-button" (click)="closeLightbox($event)">×</button>
+    </div>
   </div>
-</div>
+</ion-content>

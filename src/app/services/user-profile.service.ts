@@ -1,10 +1,8 @@
-// services/user-profile.service.ts
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { FileStorageService } from './file-storage.service';
-import { switchMap } from 'rxjs/operators';
-import { map } from 'rxjs/operators';
+import { switchMap, map, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -33,11 +31,21 @@ export class UserProfileService {
     }
   }
 
-  getUserProfile(email: string): Observable<any> {
-    return this.firestore.collection('users', ref => ref.where('email', '==', email))
-      .valueChanges({ idField: 'userId' })
-      .pipe(
-        map(users => users.length > 0 ? users[0] : null)
-      );
-  }
+ // services/user-profile.service.ts
+
+ getUserProfile(email: string): Observable<any> {
+  console.log('Getting user profile for email:', email);
+  return this.firestore.collection('users', ref => ref.where('email', '==', email))
+    .valueChanges({ idField: 'userId' })
+    .pipe(
+      map(users => {
+        console.log('Users found:', users);
+        return users.length > 0 ? users[0] : null;
+      }),
+      catchError(error => {
+        console.error('Error fetching user profile:', error);
+        return of(null);
+      })
+    );
+}
 }

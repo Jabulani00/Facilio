@@ -93,16 +93,39 @@ export class DashboardSpPage implements OnInit {
     return await modal.present();
   }
 
- updateRequest(requestId: string, newData: any) {
-  this.maintenanceRequestService.updateRequest(requestId, newData)
-    .then(() => {
-      console.log('Request updated successfully');
-      // Update local data if needed
-    })
-    .catch((error: any) => {
-      console.error('Error updating request:', error);
+  updateRequest(requestId: string, newData: any) {
+    console.log('Updating request:', requestId);
+    console.log('New data:', newData);
+  
+    // Remove any undefined values from newData
+    Object.keys(newData).forEach(key => {
+      if (newData[key] === undefined) {
+        console.log(`Removing undefined value for key: ${key}`);
+        delete newData[key];
+      }
     });
-}
+  
+    // If newData.serviceProvider exists, also remove undefined values from it
+    if (newData.serviceProvider) {
+      Object.keys(newData.serviceProvider).forEach(key => {
+        if (newData.serviceProvider[key] === undefined) {
+          console.log(`Removing undefined value from serviceProvider for key: ${key}`);
+          delete newData.serviceProvider[key];
+        }
+      });
+    }
+  
+    console.log('Cleaned new data:', newData);
+  
+    this.maintenanceRequestService.updateRequest(requestId, newData)
+      .then(() => {
+        console.log('Request updated successfully');
+        // Update local data if needed
+      })
+      .catch((error: any) => {
+        console.error('Error updating request:', error);
+      });
+  }
 
   updateStatus(request: any) {
     this.updateRequest(request.id, { status: request.status });

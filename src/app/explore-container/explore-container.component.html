@@ -1,34 +1,40 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-title>Take Issue</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="cancel()">Cancel</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-
 <ion-content class="ion-padding">
+  <div *ngIf="!isUserDataLoaded" class="user-info">
+    <p>Loading user data...</p>
+  </div>
+  <div *ngIf="isUserDataLoaded" class="user-info">
+    <h2>Service Provider Information</h2>
+    <p><strong>Name:</strong> {{userData.name}} {{userData.surname}}</p>
+    <p><strong>Email:</strong> {{userData.email}}</p>
+    <p><strong>Phone:</strong> {{userData.phoneNumber}}</p>
+    <p><strong>Location:</strong> {{userData.location}}</p>
+    <p><strong>Services:</strong> {{userData.services}}</p>
+  </div>
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <ion-item>
       <ion-label position="floating">Amount</ion-label>
       <ion-input type="number" formControlName="amount"></ion-input>
     </ion-item>
-
     <ion-item>
       <ion-label position="floating">Start Date</ion-label>
       <ion-datetime formControlName="startDate"></ion-datetime>
     </ion-item>
-
     <ion-item>
       <ion-label position="floating">Special Request</ion-label>
       <ion-textarea formControlName="specialRequest"></ion-textarea>
     </ion-item>
-
     <ion-item>
       <ion-label position="floating">Other Services (Optional)</ion-label>
       <ion-textarea formControlName="otherServices"></ion-textarea>
     </ion-item>
-
-    <ion-button expand="block" type="submit" [disabled]="!form.valid">Submit</ion-button>
+    <ion-button expand="block" type="submit" [disabled]="!form.valid || !isUserDataLoaded" class="submit-button">Submit</ion-button>
   </form>
 </ion-content>

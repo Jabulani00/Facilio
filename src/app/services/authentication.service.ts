@@ -2,7 +2,9 @@
 
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { Observable } from 'rxjs';
+import { Observable, of, switchMap, catchError } from 'rxjs';
+import { UserProfileService } from './user-profile.service';
+
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +12,31 @@ import { Observable } from 'rxjs';
 export class AuthenticationService {
   user$: Observable<any>;
 
-  constructor(private afAuth: AngularFireAuth) {
-    this.user$ = this.afAuth.authState;
+  constructor(
+    private afAuth: AngularFireAuth,
+    private userProfileService: UserProfileService
+  ) {
+    this.user$ = this.afAuth.authState.pipe(
+      switchMap(user => {
+        console.log('Auth state changed:', user);
+        if (user && user.email) {
+          console.log('Fetching user profile for:', user.email);
+          return this.userProfileService.getUserProfile(user.email).pipe(
+            catchError(error => {
+              console.error('Error fetching user profile:', error);
+              return of(null);
+            })
+          );
+        } else {
+          console.log('No user or email, returning null');
+          return of(null);
+        }
+      }),
+      catchError(error => {
+        console.error('Error in user$ observable:', error);
+        return of(null);
+      })
+    );
   }
 
   async signUp(email: string, password: string): Promise<any> {
