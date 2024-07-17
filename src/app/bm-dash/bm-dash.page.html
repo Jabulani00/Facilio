@@ -1,0 +1,26 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-title>Building Manager Dashboard</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-md="6" *ngFor="let item of menuItems">
+        <ion-card (click)="navigateTo(item.route)" class="menu-card">
+          <ion-card-header>
+            <div class="icon-container">
+              <ion-icon [name]="item.icon" class="menu-icon primary-icon"></ion-icon>
+              <ion-icon [name]="item.secondaryIcon" class="menu-icon secondary-icon"></ion-icon>
+            </div>
+          </ion-card-header>
+          <ion-card-content>
+            <h2>{{ item.title }}</h2>
+            <p>{{ item.description }}</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

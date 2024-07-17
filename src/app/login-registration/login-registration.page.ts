@@ -60,6 +60,13 @@ export class LoginRegistrationPage {
       const loading = await this.loadingController.create({ message: 'Logging in...' });
       await loading.present();
   
+      // Check for admin login
+      if (this.email === 'admin@facilio.com' && this.password === 'adminfacilio3') {
+        await loading.dismiss();
+        this.router.navigate(['/admin-dash']);
+        return;
+      }
+  
       // Attempt to sign in
       await this.authService.signIn(this.email, this.password);
   
@@ -68,6 +75,7 @@ export class LoginRegistrationPage {
         next: (userProfile) => {
           if (!userProfile) {
             this.showAlert('Login Failed', 'User profile not found.');
+            loading.dismiss();
             return;
           }
   
@@ -75,33 +83,43 @@ export class LoginRegistrationPage {
           switch (userProfile.status) {
             case 'pending':
               this.showAlert('Login Failed', 'Your account is pending approval. Please wait for admin approval.');
-              loading.dismiss(); // Dismiss loading indicator
+              loading.dismiss();
               break;
             case 'blocked':
               this.showAlert('Login Failed', 'Your account is blocked. Please contact support for assistance.');
-              loading.dismiss(); // Dismiss loading indicator
+              loading.dismiss();
               break;
             case 'suspended':
               this.showAlert('Login Failed', 'Your account is suspended. Please contact support for assistance.');
-              loading.dismiss(); // Dismiss loading indicator
+              loading.dismiss();
               break;
             default:
-              // Navigate to UserProfilePage on successful login
-              this.router.navigate(['/dashboard-sp']);
-              loading.dismiss(); // Dismiss loading indicator
+              // Navigate based on userType
+              if (userProfile.userType === 'sp') {
+                this.router.navigate(['/sp-dash']);
+              } else if (userProfile.userType === 'bm') {
+                this.router.navigate(['/bm-dash']);
+              } else {
+                this.showAlert('Login Failed', 'Invalid user type.');
+              }
+              loading.dismiss();
               break;
           }
         },
         error: (error) => {
           console.error('Login error', error);
           this.showAlert('Login Failed', 'Please check your credentials and try again.');
-          loading.dismiss(); // Dismiss loading indicator on error
+          loading.dismiss();
         }
       });
   
     } catch (error) {
       console.error('Login error', error);
       this.showAlert('Login Failed', 'Please check your credentials and try again.');
+      const loading = await this.loadingController.getTop();
+      if (loading) {
+        await loading.dismiss();
+      }
     }
   }
   
