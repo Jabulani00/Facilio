@@ -10,13 +10,14 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { environment } from '../environments/environment';
+import { RequestModalComponent } from './request-modal/request-modal.component';
 
 // Add these imports
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, RequestModalComponent],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),

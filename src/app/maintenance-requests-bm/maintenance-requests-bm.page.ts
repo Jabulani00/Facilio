@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MaintenanceRequestService } from '../services/maintenance-request.service';
 import { FileStorageService } from '../services/file-storage.service';
 import { AlertController, LoadingController } from '@ionic/angular';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
   selector: 'app-maintenance-requests-bm',
@@ -15,7 +16,8 @@ export class MaintenanceRequestsBmPage implements OnInit {
     floor: '',
     room: '',
     status: 'pending',
-    images: [] as string[]
+    images: [] as string[],
+    bm_email: ''
   };
 
   maintenanceTypes = [
@@ -33,11 +35,16 @@ export class MaintenanceRequestsBmPage implements OnInit {
     private maintenanceRequestService: MaintenanceRequestService,
     private fileStorageService: FileStorageService,
     private alertController: AlertController,
-    private loadingController: LoadingController
+    private loadingController: LoadingController,
+    private afAuth: AngularFireAuth
   ) {}
 
   ngOnInit(): void {
-    // Initialization logic if any
+    this.afAuth.authState.subscribe(user => {
+      if (user) {
+        this.maintenance.bm_email = user.email ?? '';
+      }
+    });
   }
 
   async submitRequest() {
@@ -111,7 +118,8 @@ export class MaintenanceRequestsBmPage implements OnInit {
       floor: '',
       room: '',
       status: 'pending',
-      images: []
+      images: [],
+      bm_email: ''
     };
   }
 

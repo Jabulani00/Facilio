@@ -19,4 +19,6 @@ export class ServiceProviderService {
   getServiceProviderById(id: string): Observable<any> {
     return this.firestore.doc(`serviceProviders/${id}`).valueChanges();
   }
+
+  
 }
