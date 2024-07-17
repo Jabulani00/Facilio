@@ -1,3 +1,5 @@
 npm install @capacitor/geolocation
 npm install @capacitor/core
 npm install animate.css
+npm install chart.js
+npm install ng2-charts
