@@ -1,0 +1,28 @@
+<!-- request-modal.component.html -->
+<div class="modal-content">
+  <div class="modal-header">
+    <h2>{{ request.type }}</h2>
+    <button class="close-button" (click)="closeModal()">×</button>
+    <p>issue ID: {{ request.id }}</p>
+    <p>Email: {{ request.serviceProvider.email }}</p>
+    <p>{{ request.description }}</p>
+    <p>Price offer: R{{ request.amount }}</p>
+  </div>
+  
+  <div class="modal-body">
+    <div class="input-group">
+      <label for="amount">Offer amount:</label>
+      <input type="text" id="amount" [(ngModel)]="amount" />
+    </div>
+  
+    <div class="input-group">
+      <label for="date">Choose Date:</label>
+      <input type="date" id="date" [(ngModel)]="selectedDate" />
+    </div>
+  </div>
+  
+  <div class="modal-footer">
+    <button class="deal-button" (click)="deal()">Deal</button>
+    <button class="no-deal-button" (click)="noDeal()">No Deal</button>
+  </div>
+</div>

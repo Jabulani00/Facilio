@@ -27,6 +27,21 @@ export class MaintenanceRequestService {
     return this.firestore.doc(`maintenanceRequests/${id}`).delete();
   }
 
+  updateRequestByIdAndEmail(requestId: string, email: string, data: any): Promise<void> {
+    return this.firestore.collection('maintenanceRequests')
+      .ref.where('id', '==', requestId)
+      .where('serviceProvider.email', '==', email)
+      .get()
+      .then(snapshot => {
+        if (!snapshot.empty) {
+          const docRef = snapshot.docs[0].ref;
+          return docRef.update(data);
+        } else {
+          throw new Error('No matching document found');
+        }
+      });
+    }
+
   // createRequest(maintenance: any): Promise<any> {
   //   return this.firestore.collection('maintenanceRequests').add(maintenance);
   // }
