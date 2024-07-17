@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login-registration',
@@ -15,6 +16,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
   styleUrls: ['./login-registration.page.scss'],
 })
 export class LoginRegistrationPage {
+  count?: number;
   isLogin = true;
   email: string = '';
   password: string = '';
@@ -60,14 +62,26 @@ export class LoginRegistrationPage {
       const loading = await this.loadingController.create({ message: 'Logging in...' });
       await loading.present();
   
+      // Check for admin login
+      if (this.email === 'admin@example.com' && this.password === 'adminpassword') {
+        await loading.dismiss();
+        this.router.navigate(['/admin-dash']);
+        return;
+      }
+  
       // Attempt to sign in
-      await this.authService.signIn(this.email, this.password);
+      const userCredential = await this.authService.signIn(this.email, this.password);
+      const userId = userCredential.user.uid;
   
       // Fetch user profile based on email
-      this.userProfileService.getUserProfile(this.email).subscribe({
-        next: (userProfile) => {
+      this.userProfileService.getUserProfile(this.email).pipe(
+        // Use first() to complete the observable after the first emission
+        first()
+      ).subscribe({
+        next: async (userProfile) => {
           if (!userProfile) {
             this.showAlert('Login Failed', 'User profile not found.');
+            loading.dismiss();
             return;
           }
   
@@ -75,36 +89,52 @@ export class LoginRegistrationPage {
           switch (userProfile.status) {
             case 'pending':
               this.showAlert('Login Failed', 'Your account is pending approval. Please wait for admin approval.');
-              loading.dismiss(); // Dismiss loading indicator
+              loading.dismiss();
               break;
             case 'blocked':
               this.showAlert('Login Failed', 'Your account is blocked. Please contact support for assistance.');
-              loading.dismiss(); // Dismiss loading indicator
+              loading.dismiss();
               break;
             case 'suspended':
               this.showAlert('Login Failed', 'Your account is suspended. Please contact support for assistance.');
-              loading.dismiss(); // Dismiss loading indicator
+              loading.dismiss();
               break;
             default:
-              // Navigate to UserProfilePage on successful login
-              this.router.navigate(['/dashboard-sp']);
-              loading.dismiss(); // Dismiss loading indicator
+              // Increment the login count only for successful logins
+              const currentCount = userProfile.count || 0;
+              const newCount = currentCount + 1;
+  
+              // Update the user profile with the new count
+              await this.userProfileService.updateUserProfile(userId, { count: newCount }).toPromise();
+  
+              // Navigate based on userType
+              if (userProfile.userType === 'sp') {
+                this.router.navigate(['/sp-dash']);
+              } else if (userProfile.userType === 'bm') {
+                this.router.navigate(['/bm-dash']);
+              } else {
+                this.showAlert('Login Failed', 'Invalid user type.');
+              }
+              loading.dismiss();
               break;
           }
         },
         error: (error) => {
           console.error('Login error', error);
           this.showAlert('Login Failed', 'Please check your credentials and try again.');
-          loading.dismiss(); // Dismiss loading indicator on error
+          loading.dismiss();
         }
       });
   
     } catch (error) {
       console.error('Login error', error);
       this.showAlert('Login Failed', 'Please check your credentials and try again.');
+      const loading = await this.loadingController.getTop();
+      if (loading) {
+        await loading.dismiss();
+      }
     }
   }
-  
   
 
   async register() {

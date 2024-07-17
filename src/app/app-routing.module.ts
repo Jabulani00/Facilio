@@ -67,6 +67,24 @@ const routes: Routes = [
     path: 'welcome',
     loadChildren: () => import('./welcome/welcome.module').then(m => m.WelcomePageModule)
   },
+ 
+  {
+    path: 'bm-dash',
+    loadChildren: () => import('./bm-dash/bm-dash.module').then( m => m.BmDashPageModule)
+  },
+  {
+    path: 'sp-dash',
+    loadChildren: () => import('./sp-dash/sp-dash.module').then( m => m.SpDashPageModule)
+  },
+  {
+    path: 'admin-dash',
+    loadChildren: () => import('./admin-dash/admin-dash.module').then( m => m.AdminDashPageModule)
+  },
+  
+  {
+    path: 'admin-stats',
+    loadChildren: () => import('./admin-stats/admin-stats.module').then( m => m.AdminStatsPageModule)
+  },
   {
     path: '**',
     redirectTo: 'login-registration'
