@@ -47,7 +47,8 @@ export class DashboardSpPage implements OnInit {
     this.filteredRequests = this.maintenanceRequests.filter(request => {
       const matchesType = this.selectedFilter === 'All' || request.type === this.selectedFilter;
       const matchesSearch = !this.searchTerm || request.description.toLowerCase().includes(this.searchTerm.toLowerCase());
-      return matchesType && matchesSearch;
+      const isNotPendingOne = request.progress !== 'pendingOne';
+      return matchesType && matchesSearch && isNotPendingOne;
     });
   }
 
