@@ -85,6 +85,12 @@ const routes: Routes = [
     path: 'admin-stats',
     loadChildren: () => import('./admin-stats/admin-stats.module').then( m => m.AdminStatsPageModule)
   },
+  
+  
+  {
+    path: 'service-request-modal',
+    loadChildren: () => import('./service-request-modal/service-request-modal.module').then( m => m.ServiceRequestModalPageModule)
+  },
   {
     path: '**',
     redirectTo: 'login-registration'

@@ -15,7 +15,6 @@ import { RequestModalComponent } from './request-modal/request-modal.component';
 // Add these imports
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-
 @NgModule({
   declarations: [AppComponent, RequestModalComponent],
   imports: [
@@ -28,7 +27,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AngularFireStorageModule,
     // Add these modules
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
