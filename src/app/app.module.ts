@@ -10,6 +10,8 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { environment } from '../environments/environment';
+import { UserProfileService } from './services/user-profile.service'; // Import the service
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,7 +26,10 @@ import { environment } from '../environments/environment';
     AngularFireStorageModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    UserProfileService // Ensure the service is provided
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -68,9 +68,15 @@ const routes: Routes = [
     loadChildren: () => import('./welcome/welcome.module').then(m => m.WelcomePageModule)
   },
   {
+    path: 'reports',
+    loadChildren: () => import('./reports/reports.module').then( m => m.ReportsPageModule)
+  },
+  {
     path: '**',
     redirectTo: 'login-registration'
   },
+  
+
  
 ];
 

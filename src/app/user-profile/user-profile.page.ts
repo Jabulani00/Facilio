@@ -6,6 +6,7 @@ import firebase from 'firebase/compat/app';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
+
 interface UserData {
   email: string;
   name?: string;

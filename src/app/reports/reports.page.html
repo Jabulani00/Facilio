@@ -1,0 +1,39 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Reported Issues</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-segment [(ngModel)]="selectedSegment">
+    <ion-segment-button value="unresolved">
+      <ion-label>Unresolved</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="resolved">
+      <ion-label>Resolved</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <ion-list *ngIf="selectedSegment === 'unresolved'">
+    <ion-item *ngFor="let issue of unresolvedIssues">
+      <ion-label>
+        <h2>{{ issue.buildingManagerEmail }}</h2>
+        <p>{{ issue.issue }}</p>
+        <p>Reported On: {{ issue.reportedAt.toDate() | date:'medium' }}</p>
+      </ion-label>
+      <ion-button (click)="suspendAccount(issue.userId)">Suspend Account</ion-button>
+      <ion-button (click)="resolveIssue(issue.issueId, 'admin@example.com')">Resolve Issue</ion-button>
+    </ion-item>
+  </ion-list>
+
+  <ion-list *ngIf="selectedSegment === 'resolved'">
+    <ion-item *ngFor="let issue of resolvedIssues">
+      <ion-label>
+        <h2>{{ issue.buildingManagerEmail }}</h2>
+        <p>{{ issue.issue }}</p>
+        <p>Reported On: {{ issue.reportedAt.toDate() | date:'medium' }}</p>
+        <p>Resolved On: {{ issue.resolvedAt.toDate() | date:'medium' }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>
