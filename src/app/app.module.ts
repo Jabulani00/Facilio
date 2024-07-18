@@ -10,12 +10,18 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { environment } from '../environments/environment';
+<<<<<<< HEAD
 import { UserProfileService } from './services/user-profile.service'; // Import the service
 
+=======
+import { RequestModalComponent } from './request-modal/request-modal.component';
+
+// Add these imports
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+>>>>>>> 0a4e85528803fb310e0986834b0cc53b8dc0be26
 
 @NgModule({
-  declarations: [AppComponent],
-  
+  declarations: [AppComponent, RequestModalComponent],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
@@ -23,7 +29,10 @@ import { UserProfileService } from './services/user-profile.service'; // Import 
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     AngularFirestoreModule,
-    AngularFireStorageModule
+    AngularFireStorageModule,
+    // Add these modules
+    FormsModule,
+    ReactiveFormsModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [

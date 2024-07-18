@@ -1,0 +1,36 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Service Request</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Service Request</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <form (ngSubmit)="submitServiceRequest()">
+    <ion-item>
+      <ion-label position="stacked">Service</ion-label>
+      <ion-input type="text" required [(ngModel)]="service" name="service"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Description</ion-label>
+      <ion-textarea rows="4" required [(ngModel)]="description" name="description"></ion-textarea>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Date and Time</ion-label>
+      <ion-datetime display-format="MMM DD, YYYY HH:mm" min="2024" [(ngModel)]="dateTime" name="dateTime"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Location and Address</ion-label>
+      <ion-textarea rows="3" required [(ngModel)]="locationAddress" name="locationAddress"></ion-textarea>
+    </ion-item>
+    <ion-button expand="block" type="submit">Submit Request</ion-button>
+  </form>
+</ion-content>

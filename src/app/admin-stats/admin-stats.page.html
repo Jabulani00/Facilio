@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Admin Stats</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="stats-container">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title><ion-icon name="checkmark-circle"></ion-icon> Approved Users</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <h2>{{ approvedCount }}</h2>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title><ion-icon name="time"></ion-icon> Pending Users</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <h2>{{ pendingCount }}</h2>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title><ion-icon name="close-circle"></ion-icon> Suspended Users</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <h2>{{ suspendedCount }}</h2>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <div class="chart-container">
+    <h2>Maintenance Requests</h2>
+    <canvas id="maintenanceChart"></canvas>
+  </div>
+
+  <div class="chart-container">
+    <h2>Top 5 Users</h2>
+    <canvas id="userChart"></canvas>
+  </div>
+
+  <div class="chart-container">
+    <h2>Issues</h2>
+    <canvas id="issuesChart"></canvas>
+  </div>
+</ion-content>

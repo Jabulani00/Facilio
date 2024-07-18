@@ -1,0 +1,87 @@
+/* request-modal.component.scss */
+.modal-content {
+    position: relative;
+    padding: 20px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    max-height: 90vh; /* Adjust to ensure the modal doesn't exceed viewport height */
+    overflow-y: auto; /* Enable scrolling if content overflows */
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  
+  .modal-content:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  }
+  
+  .modal-header {
+    background-color: #199DC1;
+    color: white;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    padding: 15px;
+    text-align: center;
+    position: relative; /* Position relative to position the close button */
+  }
+  
+  .close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: white;
+  }
+  
+  .modal-body {
+    padding: 20px;
+  }
+  
+  .input-group {
+    margin: 10px 0;
+  }
+  
+  .input-group label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .input-group input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-sizing: border-box;
+  }
+  
+  .modal-footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .deal-button {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  .no-deal-button {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  button:hover {
+    opacity: 0.9;
+  }
+  

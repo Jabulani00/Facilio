@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title class="ion-text-center">Take Issue</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cancel()">
+        <ion-icon name="close-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding custom-background">
+  <div *ngIf="!isUserDataLoaded" class="user-info loading-spinner">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Loading user data...</p>
+  </div>
+
+  <ion-card *ngIf="isUserDataLoaded" class="user-info-card">
+    <ion-card-header>
+      <ion-card-title>Service Provider Information</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p><ion-icon name="person-outline"></ion-icon> <strong>Name:</strong> {{userData.name}} {{userData.surname}}</p>
+      <p><ion-icon name="mail-outline"></ion-icon> <strong>Email:</strong> {{userData.email}}</p>
+      <p><ion-icon name="call-outline"></ion-icon> <strong>Phone:</strong> {{userData.phoneNumber}}</p>
+      <p><ion-icon name="location-outline"></ion-icon> <strong>Location:</strong> {{userData.location}}</p>
+      <p><ion-icon name="construct-outline"></ion-icon> <strong>Services:</strong> {{userData.services}}</p>
+    </ion-card-content>
+  </ion-card>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="custom-form">
+    <ion-item>
+      <ion-label position="floating">Amount</ion-label>
+      <ion-input type="number" formControlName="amount"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Start Date</ion-label>
+      <ion-datetime formControlName="startDate" min="2024" display-format="MMM DD, YYYY"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Special Request</ion-label>
+      <ion-textarea formControlName="specialRequest"></ion-textarea>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Other Services (Optional)</ion-label>
+      <ion-textarea formControlName="otherServices"></ion-textarea>
+    </ion-item>
+    <ion-button expand="block" type="submit" [disabled]="!form.valid || !isUserDataLoaded" class="submit-button">
+      <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
+      Submit
+    </ion-button>
+  </form>
+</ion-content>

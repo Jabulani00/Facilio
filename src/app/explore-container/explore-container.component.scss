@@ -1,0 +1,44 @@
+.custom-background {
+  --background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.user-info-card {
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.user-info-card ion-card-header {
+  background-color: var(--ion-color-primary);
+  color: white;
+}
+
+.user-info-card ion-card-content p {
+  margin: 10px 0;
+}
+
+.user-info-card ion-icon {
+  margin-right: 10px;
+  color: var(--ion-color-primary);
+}
+
+.custom-form ion-item {
+  --background: rgba(255, 255, 255, 0.8);
+  --border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.submit-button {
+  margin-top: 20px;
+  --border-radius: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+}

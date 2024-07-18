@@ -1,10 +1,39 @@
-<ion-header [translucent]="true">
+<!-- maintenance-requests.page.html -->
+<ion-header>
   <ion-toolbar>
-    <ion-title>dashboard-bm</ion-title>
+    <ion-title>Maintenance Requests</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content>
+  <div class="hero-section animate__animated animate__fadeIn">
+    <h1>Business Manager Dashboard</h1>
+    <p>Sort your requests and Accept offers</p>
+  </div>
 
+  <ion-segment (ionChange)="segmentChanged($event)" value="all">
+    <ion-segment-button value="all">
+      <ion-label>All</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="approved">
+      <ion-label>Approved</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="denied">
+      <ion-label>Denied</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="pending">
+      <ion-label>Pending</ion-label>
+    </ion-segment-button>
+  </ion-segment>
 
+  <ion-list>
+    <ion-item *ngFor="let request of filteredRequests" (click)="openModal(request)">
+      <ion-label>
+        <h2>{{ request.type }}</h2>
+        <p>info: {{ request.description }}</p>
+        <p>Status: {{ request.status }}</p>
+        <p>offer: R{{ request.amount }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
 </ion-content>
