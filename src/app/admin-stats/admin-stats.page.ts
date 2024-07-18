@@ -36,15 +36,19 @@ export class AdminStatsPage implements OnInit {
   fetchChartsData() {
     // Maintenance Chart
     this.firestore.collection('maintenanceRequests').get().subscribe(snapshot => {
-      const maintenanceCount = snapshot.size;
-      const ctx = document.getElementById('maintenanceChart') as HTMLCanvasElement;
-      new Chart(ctx, {
+      const maintenanceData = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...(doc.data() as { priority?: number })
+      }));
+      
+      const maintenanceCtx = document.getElementById('maintenanceChart') as HTMLCanvasElement;
+      new Chart(maintenanceCtx, {
         type: 'bar',
         data: {
-          labels: ['Maintenance Requests'],
+          labels: maintenanceData.map(request => request.id),
           datasets: [{
-            label: 'Number of Maintenance Requests',
-            data: [maintenanceCount],
+            label: 'Maintenance Requests',
+            data: maintenanceData.map(request => request.priority || 1),
             backgroundColor: '#3498db'
           }]
         },
@@ -52,57 +56,125 @@ export class AdminStatsPage implements OnInit {
           responsive: true,
           scales: {
             y: {
-              beginAtZero: true
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Priority'
+              }
+            },
+            x: {
+              title: {
+                display: true,
+                text: 'Request ID'
+              }
             }
           }
         }
       });
     });
-
+  
     // User Chart
     this.firestore.collection('users', ref => ref.orderBy('count', 'desc').limit(5)).get().subscribe(snapshot => {
-      const usersData = snapshot.docs.map(doc => doc.data());
-      const labels = usersData.map((user: any) => user.email);
-      const data = usersData.map((user: any) => user.count);
-
-      const ctx = document.getElementById('userChart') as HTMLCanvasElement;
-      new Chart(ctx, {
+      const usersData = snapshot.docs.map(doc => doc.data() as { email: string; count: number });
+      const labels = usersData.map(user => user.email);
+      const data = usersData.map(user => user.count);
+  
+      const userCtx = document.getElementById('userChart') as HTMLCanvasElement;
+      new Chart(userCtx, {
         type: 'bar',
         data: {
           labels: labels,
           datasets: [{
-            label: 'Top 5 Users by Count',
+            label: 'User Count',
             data: data,
             backgroundColor: '#2ecc71'
+          }, {
+            label: 'Target',
+            data: labels.map(() => 75), // Example target value
+            type: 'line',
+            borderColor: '#e74c3c',
+            borderWidth: 2,
+            fill: false
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          scales: {
+            x: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Count'
+              }
+            },
+            y: {
+              title: {
+                display: true,
+                text: 'User Email'
+              }
+            }
+          },
+          plugins: {
+            legend: {
+              display: true,
+              position: 'top'
+            }
+          }
+        }
+      });
+    });
+  
+    // Issues Chart
+    this.firestore.collection('issues').get().subscribe(snapshot => {
+      const issuesData = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...(doc.data() as { severity?: number; frequency?: number })
+      }));
+      
+      const issuesCtx = document.getElementById('issuesChart') as HTMLCanvasElement;
+      new Chart(issuesCtx, {
+        type: 'bubble',
+        data: {
+          datasets: [{
+            label: 'Issues',
+            data: issuesData.map(issue => ({
+              x: issue.id,
+              y: issue.severity || 1,
+              r: issue.frequency || 5
+            })),
+            backgroundColor: 'rgba(243, 156, 18, 0.6)'
           }]
         },
         options: {
           responsive: true,
           scales: {
+            x: {
+              type: 'category',
+              position: 'bottom',
+              title: {
+                display: true,
+                text: 'Issue ID'
+              }
+            },
             y: {
-              beginAtZero: true
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Severity'
+              }
+            }
+          },
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: function(context: any) {
+                  const rawData = context.raw as { x: string; y: number; r: number };
+                  return `Issue ${rawData.x}: Severity ${rawData.y}, Frequency ${rawData.r}`;
+                }
+              }
             }
           }
-        }
-      });
-    });
-
-    // Issues Chart
-    this.firestore.collection('issues').get().subscribe(snapshot => {
-      const issuesCount = snapshot.size;
-      const ctx = document.getElementById('issuesChart') as HTMLCanvasElement;
-      new Chart(ctx, {
-        type: 'pie',
-        data: {
-          labels: ['Issues'],
-          datasets: [{
-            label: 'Number of Issues',
-            data: [issuesCount],
-            backgroundColor: ['#f39c12']
-          }]
-        },
-        options: {
-          responsive: true
         }
       });
     });
